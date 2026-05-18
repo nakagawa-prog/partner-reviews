@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>パートナー対応所感</title>
+  <style>
+    :root {
+      --bg: #fafafa;
+      --panel: #ffffff;
+      --border: #e2e2e2;
+      --text: #222;
+      --muted: #777;
+      --accent: #2b6cb0;
+      --accent-bg: #e6f0fa;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+      line-height: 1.65;
+      font-size: 13px;
+    }
+    .container {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 32px 24px 80px;
+    }
+    h1.site-title {
+      font-size: 22px;
+      margin: 0 0 4px;
+    }
+    .site-sub {
+      color: var(--muted);
+      font-size: 12px;
+      margin: 0 0 24px;
+    }
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      border-bottom: 2px solid var(--border);
+      margin-bottom: 24px;
+    }
+    .tab-btn {
+      appearance: none;
+      background: transparent;
+      border: 1px solid transparent;
+      border-bottom: none;
+      padding: 10px 18px;
+      font-size: 14px;
+      cursor: pointer;
+      color: var(--muted);
+      border-radius: 8px 8px 0 0;
+      font-family: inherit;
+      transform: translateY(2px);
+    }
+    .tab-btn:hover {
+      color: var(--text);
+      background: #f0f0f0;
+    }
+    .tab-btn.active {
+      color: var(--accent);
+      background: var(--panel);
+      border-color: var(--border);
+      font-weight: 600;
+    }
+    .content {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 24px 28px;
+      min-height: 200px;
+      font-size: 13px;
+    }
+    .content > :first-child {
+      margin-top: 0;
+    }
+    .content h2 {
+      font-size: 15px;
+      margin-top: 36px;
+      margin-bottom: 12px;
+      padding-bottom: 6px;
+      border-bottom: 2px solid var(--accent);
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .content h3 {
+      font-size: 13px;
+      margin-top: 20px;
+      margin-bottom: 8px;
+      padding: 6px 10px;
+      border-left: 3px solid var(--accent);
+      background: var(--accent-bg);
+      border-radius: 0 4px 4px 0;
+      font-weight: 600;
+    }
+    .content h4 {
+      font-size: 12.5px;
+      margin-top: 16px;
+      margin-bottom: 6px;
+      color: #444;
+      font-weight: 600;
+    }
+    /* Tier 確度バッジ */
+    .content h3.tier-heading {
+      background: #fff7ed;
+      border-left-color: #f59e0b;
+      color: #b45309;
+    }
+    .tier-mark {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin: 4px 0 20px;
+      padding: 12px 16px;
+      background: #fffbeb;
+      border: 2px solid #fcd34d;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #78350f;
+    }
+    .tier-icon {
+      display: inline-block;
+      width: 36px;
+      height: 36px;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      vertical-align: middle;
+      flex-shrink: 0;
+    }
+    /* ◯ ピンク（線のみ） */
+    .tier-icon.tier-yes {
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><circle cx='12' cy='12' r='9' fill='none' stroke='%23ec4899' stroke-width='3'/></svg>");
+    }
+    /* △ 黄色（線のみ） */
+    .tier-icon.tier-maybe {
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><polygon points='12,4 22,21 2,21' fill='none' stroke='%23eab308' stroke-width='3' stroke-linejoin='round'/></svg>");
+    }
+    /* × ブルー */
+    .tier-icon.tier-no {
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><line x1='5' y1='5' x2='19' y2='19' stroke='%233b82f6' stroke-width='3.5' stroke-linecap='round'/><line x1='19' y1='5' x2='5' y2='19' stroke='%233b82f6' stroke-width='3.5' stroke-linecap='round'/></svg>");
+    }
+    .tier-tilde {
+      font-size: 20px;
+      color: #92400e;
+      margin: 0 4px;
+      font-weight: 700;
+    }
+    .content hr {
+      border: none;
+      border-top: 1px dashed var(--border);
+      margin: 24px 0;
+    }
+    .content a {
+      color: var(--accent);
+      word-break: break-all;
+    }
+    .content ul {
+      padding-left: 22px;
+    }
+    .content code {
+      background: #f4f4f4;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+    .content blockquote {
+      border-left: 4px solid #ccc;
+      margin: 12px 0;
+      padding: 4px 14px;
+      color: #555;
+      background: #f8f8f8;
+    }
+    .loading, .error {
+      color: var(--muted);
+      padding: 40px 0;
+      text-align: center;
+    }
+    .error { color: #c53030; }
+    footer {
+      margin-top: 40px;
+      color: var(--muted);
+      font-size: 12px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="site-title">パートナー対応所感</h1>
+    <p class="site-sub">外注デザイナーごとの対応所感まとめ。週次で追記更新。</p>
+
+    <div class="tabs" id="tabs"></div>
+    <div class="content" id="content">
+      <div class="loading">読み込み中...</div>
+    </div>
+
+    <footer>last updated: <span id="updated"></span></footer>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
+  <script>
+    const tabsEl = document.getElementById('tabs');
+    const contentEl = document.getElementById('content');
+    const updatedEl = document.getElementById('updated');
+
+    function getInitialId(partners) {
+      const hash = location.hash.replace('#', '');
+      if (hash && partners.some(p => p.id === hash)) return hash;
+      return partners[0]?.id;
+    }
+
+    async function loadPartner(p) {
+      contentEl.innerHTML = '<div class="loading">読み込み中...</div>';
+      try {
+        const res = await fetch(`partners/${p.id}.md?ts=${Date.now()}`);
+        if (!res.ok) throw new Error(`fetch failed: ${res.status}`);
+        const md = await res.text();
+        contentEl.innerHTML = marked.parse(md);
+      } catch (e) {
+        contentEl.innerHTML = `<div class="error">読み込みに失敗しました: ${e.message}</div>`;
+      }
+    }
+
+    function activateTab(id, partners) {
+      document.querySelectorAll('.tab-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.id === id);
+      });
+      const p = partners.find(x => x.id === id);
+      if (p) {
+        loadPartner(p);
+        history.replaceState(null, '', `#${id}`);
+      }
+    }
+
+    async function init() {
+      try {
+        const res = await fetch(`partners.json?ts=${Date.now()}`);
+        const partners = await res.json();
+
+        partners.forEach(p => {
+          const btn = document.createElement('button');
+          btn.className = 'tab-btn';
+          btn.textContent = p.name;
+          btn.dataset.id = p.id;
+          btn.onclick = () => activateTab(p.id, partners);
+          tabsEl.appendChild(btn);
+        });
+
+        const initialId = getInitialId(partners);
+        if (initialId) activateTab(initialId, partners);
+
+        updatedEl.textContent = new Date().toLocaleString('ja-JP');
+      } catch (e) {
+        contentEl.innerHTML = `<div class="error">パートナー一覧の読み込みに失敗しました: ${e.message}</div>`;
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>
