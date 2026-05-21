@@ -3,72 +3,108 @@
 外注デザイナー（パートナー）の対応所感をパートナー別にまとめるサイトです。
 週次で追記更新します。
 
+公開URL: <https://nakagawa-prog.github.io/partner-reviews/>
+
 ## 構成
 
 ```
 partner-reviews/
-├── index.html        # タブ切替UI（ブラウザで開くか GitHub Pages で公開）
-├── partners.json     # パートナー一覧（タブの並び順を管理）
+├── index.html        # タブ切替UI（GitHub Pages で公開）
 ├── partners/
-│   ├── hiraoka.md    # 平岡さん
+│   ├── hiraoka.md    # 平岡さん（先頭に <!-- 平岡さん --> コメント）
 │   ├── nishijima.md  # 西嶋さん
 │   └── shimizu.md    # 清水さん
 └── README.md
 ```
 
-## 閲覧方法
+タブの並びは **ファイル名のアルファベット順**。表示名は各 .md 先頭の HTMLコメント `<!-- ◯◯さん -->` から自動取得します。
 
-- GitHub Pages 公開後: `https://<user>.github.io/partner-reviews/`
-- ローカル: `index.html` をブラウザで開く（パートナーのMarkdownは `fetch` で読み込むため、ファイルプロトコルだと CORS でエラーになる可能性があります。その場合は `python3 -m http.server` などで簡易サーバを立てて閲覧してください）
-
-## 更新方法（Claude に依頼するとき）
-
-各パートナーの所感は、`## YYYY/MM/DD ライター名` 見出しで時系列に区切られます。
-新しい所感は **下に追記** されていきます（最新が一番下、ではなく時系列の下に積む形）。
+## メンバー向け編集マニュアル（aoki-yukihiro 等）
 
 ### 既存パートナーに追記する
 
-> 平岡さんに 5/25 寒竹で追記して。
-> （以下、追記内容）
+1. 対象パートナーの .md を開く
+   - 平岡さん: <https://github.com/nakagawa-prog/partner-reviews/blob/main/partners/hiraoka.md>
+   - 西嶋さん: <https://github.com/nakagawa-prog/partner-reviews/blob/main/partners/nishijima.md>
+   - 清水さん: <https://github.com/nakagawa-prog/partner-reviews/blob/main/partners/shimizu.md>
+2. 右上の鉛筆アイコン（Edit）をクリック
+3. ファイルの末尾に以下のテンプレを貼って書き換える
+   ```
+   ## 2026/MM/DD ライター名
 
-→ `partners/hiraoka.md` の末尾に
-```
-## 2026/05/25 寒竹
+   ### 6月末までのTier1,2確度
 
-### 6月末までのTier1,2確度
+   <p class="tier-mark"><span class="tier-icon tier-yes"></span></p>
 
-<p class="tier-mark"><span class="tier-icon tier-yes"></span></p>
+   ### 成果物のクオリティについて
+   （本文）
 
-### 成果物のクオリティについて
-...
-```
-の形で追加されます。
+   ### 対応スピードについて
+   （本文）
 
-**Tier確度のアイコン記法（参考）**
+   ### 意思疎通のしやすさについて
+   （本文）
 
-| 値 | クラス | 図形 | 色 |
-| --- | --- | --- | --- |
-| ◯ | `tier-icon tier-yes` | 円 | ピンク |
-| △ | `tier-icon tier-maybe` | 三角 | 黄色 |
-| × | `tier-icon tier-no` | バツ | ブルー |
+   ### そのほか自由になんでも
+   （本文）
 
-複数値（例: △〜◯）は `<span class="tier-tilde">〜</span>` で繋ぐ。
+   ### パートナー担当記事リリースURL
+   - 記事URL: ...
+   ```
+4. 下にスクロール → 緑の「Commit changes…」→「Commit changes」
+5. 30秒〜1分でサイトに反映
 
 ### 新しいパートナーを追加する
 
-> 新しく田中さん追加して、初回は 5/20 青木で。
-> （以下、所感内容）
+1. 👉 <https://github.com/nakagawa-prog/partner-reviews/new/main/partners> を開く
+2. 「Name your file」に `tanaka.md`（苗字をローマ字小文字で、半角英字のみ）
+3. 「Edit new file」エリアに以下を貼り付け、内容を書き換え
+   ```
+   <!-- 田中さん -->
 
-→ `partners/tanaka.md` が作成され、`partners.json` のタブ一覧にも自動追加されます。
+   ## 2026/MM/DD ライター名
 
-### URL を伏せる / 表現を変える
+   ### 6月末までのTier1,2確度
 
-> 平岡さんの記事URL部分を伏せて
+   <p class="tier-mark"><span class="tier-icon tier-yes"></span></p>
 
-→ 該当 Markdown を直接編集します。元データはこのリポジトリのみに残るため、表示を変えても情報は失われません。
+   ### 成果物のクオリティについて
+   （本文）
+
+   ### 対応スピードについて
+   （本文）
+
+   ### 意思疎通のしやすさについて
+   （本文）
+
+   ### そのほか自由になんでも
+   （本文）
+
+   ### パートナー担当記事リリースURL
+   - 記事URL: ...
+   ```
+4. 下にスクロール →「Commit new file」
+5. 30秒〜1分でタブが追加される
+
+**重要**: 1行目の `<!-- 田中さん -->` がタブ名になります。これを忘れるとファイル名（`tanaka`）が表示されます。
+
+### Tier確度アイコン記法
+
+| 値 | コピペ用 |
+| --- | --- |
+| ◯（ピンク） | `<p class="tier-mark"><span class="tier-icon tier-yes"></span></p>` |
+| △（黄色） | `<p class="tier-mark"><span class="tier-icon tier-maybe"></span></p>` |
+| ×（ブルー） | `<p class="tier-mark"><span class="tier-icon tier-no"></span></p>` |
+| △〜◯ | `<p class="tier-mark"><span class="tier-icon tier-maybe"></span><span class="tier-tilde">〜</span><span class="tier-icon tier-yes"></span></p>` |
 
 ## ホスティング
 
 - GitHub: Public リポジトリ（Free プランのため Private + Pages 不可）
-- 公開ページは `<meta name="robots" content="noindex, nofollow">` を入れて検索エンジンに載らないようにしています
-- URL を不用意に共有しないこと
+- 公開ページは `<meta name="robots" content="noindex, nofollow">` を入れて検索エンジンに載らないようにしている
+- URL は部署内（Chatwork）のみで共有すること
+
+## 技術メモ
+
+- タブ一覧は GitHub Contents API（`/repos/.../contents/partners`）で動的に取得
+- 未認証なので IP 単位 60req/h のレートリミットあり。小規模チームなら問題なし
+- ローカル確認時は `python3 -m http.server` で立ち上げてブラウザで http://localhost:8000/ を開く

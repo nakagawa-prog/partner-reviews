@@ -207,6 +207,10 @@
 
   <script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
   <script>
+    // partners/ フォルダ内の .md を GitHub API で自動列挙する。
+    // 表示名は各 .md の先頭にあるコメント `<!-- 表示名 -->` から取得。
+    const REPO = 'nakagawa-prog/partner-reviews';
+
     const tabsEl = document.getElementById('tabs');
     const contentEl = document.getElementById('content');
     const updatedEl = document.getElementById('updated');
@@ -217,16 +221,13 @@
       return partners[0]?.id;
     }
 
-    async function loadPartner(p) {
-      contentEl.innerHTML = '<div class="loading">読み込み中...</div>';
-      try {
-        const res = await fetch(`partners/${p.id}.md?ts=${Date.now()}`);
-        if (!res.ok) throw new Error(`fetch failed: ${res.status}`);
-        const md = await res.text();
-        contentEl.innerHTML = marked.parse(md);
-      } catch (e) {
-        contentEl.innerHTML = `<div class="error">読み込みに失敗しました: ${e.message}</div>`;
-      }
+    function extractName(md, fallback) {
+      const m = md.match(/<!--\s*(.+?)\s*-->/);
+      return m ? m[1] : fallback;
+    }
+
+    function stripLeadingComment(md) {
+      return md.replace(/^\s*<!--[\s\S]*?-->\s*\n?/, '');
     }
 
     function activateTab(id, partners) {
@@ -235,16 +236,40 @@
       });
       const p = partners.find(x => x.id === id);
       if (p) {
-        loadPartner(p);
+        contentEl.innerHTML = marked.parse(stripLeadingComment(p.md));
         history.replaceState(null, '', `#${id}`);
       }
     }
 
     async function init() {
       try {
-        const res = await fetch(`partners.json?ts=${Date.now()}`);
-        const partners = await res.json();
+        // 1) partners/ 配下の .md ファイル一覧を取得
+        const apiRes = await fetch(
+          `https://api.github.com/repos/${REPO}/contents/partners`,
+          { headers: { Accept: 'application/vnd.github+json' } }
+        );
+        if (!apiRes.ok) throw new Error(`GitHub API: HTTP ${apiRes.status}`);
+        const files = await apiRes.json();
+        const mdFiles = files
+          .filter(f => f.type === 'file' && f.name.endsWith('.md'))
+          .sort((a, b) => a.name.localeCompare(b.name));
 
+        if (mdFiles.length === 0) {
+          contentEl.innerHTML = '<div class="error">パートナーが登録されていません。</div>';
+          return;
+        }
+
+        // 2) 各 .md を取得して表示名・本文を読み込み
+        const partners = await Promise.all(
+          mdFiles.map(async f => {
+            const id = f.name.replace(/\.md$/, '');
+            const mdRes = await fetch(`partners/${f.name}?ts=${Date.now()}`);
+            const md = await mdRes.text();
+            return { id, name: extractName(md, id), md };
+          })
+        );
+
+        // 3) タブ描画
         partners.forEach(p => {
           const btn = document.createElement('button');
           btn.className = 'tab-btn';
